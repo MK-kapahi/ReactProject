@@ -1,13 +1,13 @@
 import logo from './logo.svg';
 import './App.css';
-import React from 'react';
-import Addusers from './components/Addusers';
+import DetailForm from './Components/DetailForm';
+import Home from './Components/Home';
+
 
 function App() {
   return (
-    <div>
-      <h1>Heyyyy</h1>
-      <Addusers></Addusers>
+    <div className="App">
+    <Home />
     </div>
   );
 }
