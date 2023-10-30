@@ -1,5 +1,5 @@
 export const ERROR_MESSAGES = {
-    ENTER_ALL_FIELDS: "enter all fields are mandatory",
+    ENTER_ALL_FIELDS: "All fields are mandatory",
     ENTER_VALID_LENGTH: "enter Name with atleast more than 2 character",
     ENTER_BELOW_LENGTH_LIMIT: (length)=>(`Enter Character less than ${length+1} only`),
     ENTER_VALID_EMAIL: "Enter valid email",
@@ -16,3 +16,13 @@ export const REGEX = {
     PASSWORD: /^(?=.{6,})(?=.*[a-z])(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$/,
     PHONE:/^[6-9]\\d{9}$/,
   };
+
+
+export const  URL = "http://localhost:8000/user/"  
+export const route =
+{
+   POST : "addUser",
+   UPLOADIMAGE :"upload",
+   DELETE : "deleteUser",
+   UPDATE : "updateUser"
+}  
