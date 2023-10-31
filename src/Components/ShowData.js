@@ -1,24 +1,12 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { URL, route } from "../Shared/Constant";
-
-export default function ShowData({ data , setData = () => { } }) {
-    const deleteUser = (id) =>{
-        console.log(id);
-
-        axios.delete(URL+route.DELETE+"/"+id).then((res)=>{
-            console.log(res)
-
-            axios.get(URL).then((res)=>{
-                setData([...res.data])
-            })
-        }).catch((err)=>{
-            console.log(err);
-        })
+import { IMAGEURL, URL, route } from "../Shared/Constant";
+import '../App.css';
+export default function ShowData({ data, setData = () => { }, deleteUser }) {
 
 
-
-
+    const deleteSelectedUser = (id) => {
+        deleteUser(id)
     }
 
     const HeadingArray = {
@@ -43,6 +31,11 @@ export default function ShowData({ data , setData = () => { } }) {
         {
             title: "Image",
             value: "imagePath"
+        },
+
+        ACTION:
+        {
+            title : "Action"
         }
     };
     return (
@@ -59,20 +52,11 @@ export default function ShowData({ data , setData = () => { } }) {
                                             <th >
                                                 <div className='d-flex '>
                                                     {heading.title}
-                                                    <div >
-                                                        <button
-                                                            className='fa fa-caret-up btn btn-sm'
-                                                        // onClick={() => { handleSort(heading, ASC) }}
-                                                        ></button>
-                                                        <button
-                                                            className='fa fa-caret-down btn btn-sm'
-                                                        // onClick={() => { handleSort(heading, DEC) }}
-                                                        ></button>
-                                                    </div>
                                                 </div>
                                             </th>
                                         )
                                     })}
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -85,10 +69,13 @@ export default function ShowData({ data , setData = () => { } }) {
                                             <td>{val.contact}</td>
                                             <td>{val.age}</td>
                                             <td> <div>
-                                                <button onClick={()=> deleteUser(val._id)}>
+                                                <img src={IMAGEURL+val.imagePath} ></img>
+                                            </div></td>
+                                            <td> <div>
+                                                <button onClick={() => deleteSelectedUser(val._id)}>
                                                     Delete
                                                 </button>
-                                                </div> </td>
+                                            </div> </td>
                                         </tr>
                                     );
                                 })}

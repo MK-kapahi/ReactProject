@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { ERROR_MESSAGES, REGEX, URL, route } from "../Shared/Constant";
 import axios from "axios";
+import '../App.css';
 
 
 const initialFormFields = {
@@ -21,7 +22,7 @@ const formErrorsInitialState = {
     err: "",
 };
 
-export default function DetailForm({ data, setData = () => { } }) {
+export default function DetailForm({ data, setData = () => { } , postData }) {
     const invalidCharacterForEmail = "!#$%^&*()_-+=~`,<>/?;:'{}[]\\|\"\"";
     const arrOfInvalidChForEmail = invalidCharacterForEmail.split("");
 
@@ -93,31 +94,17 @@ export default function DetailForm({ data, setData = () => { } }) {
         const file = e.target.files[0];
 
         if (file) {
-            uploadImage(file)
+            setUploadpic(file)
         }
     }
 
 
-    function uploadImage(image) {
-
-        const formData = new FormData();
-        formData.append('file', image)
-
-
-        axios.post(URL + route.UPLOADIMAGE, formData).then((res) => {
-            console.log(res)
-            setUploadpic(res.data.path)
-
-        }).catch((err) => {
-            console.log(err)
-        })
-
-    }
 
     // Reset Form
     const resetForm = () => {
         setFormFields(initialFormFields);
         setFormFieldsErrors(formErrorsInitialState);
+        setUploadpic(null)
     };
 
     const handleSubmit = (e) => {
@@ -128,8 +115,6 @@ export default function DetailForm({ data, setData = () => { } }) {
             password,
             contact,
             age,
-
-
         } = formFields;
 
         //Validation checks
@@ -166,28 +151,20 @@ export default function DetailForm({ data, setData = () => { } }) {
             setFormFieldsErrors({ "password": ERROR_MESSAGES.ENTER_VALID_PASSWORD })
             return;
         }
-
         // All validations passed, proceed with saving data
         console.log("Data", data)
-        const updatedData =
-        {
-            name: name,
-            email: email,
-            password: password,
-            contact: contact,
-            age: age,
-            imagePath: uploadpic
-        }
-            ;
-        console.log(updatedData)
 
-        setData((prevData) => ([...prevData, updatedData]));
-        axios.post(URL + route.POST, updatedData).then((res) => {
-            console.log(res);
+        const formData = new FormData();
+        formData.append("name", name)
+        formData.append("email", email)
+        formData.append("password", password)
+        formData.append("contact", contact)
+        formData.append("age", age)
+        formData.append('file', uploadpic)
+        console.log(formData)
 
-        }).catch((err) => {
-            console.log(err);
-        })
+        setData((prevData) => ([...prevData, formData]));
+        postData(formData);
         console.log(setData)
 
         resetForm();
@@ -197,7 +174,7 @@ export default function DetailForm({ data, setData = () => { } }) {
         <section>
 
             <div className="container">
-                <form enctype='multipart/form-data' >
+                <form encType='multipart/form-data' >
 
                     <div className="mb-3 row">
                         <label htmlFor="staticEmail" className="col-sm-2 col-form-label" >Name</label>
@@ -236,7 +213,7 @@ export default function DetailForm({ data, setData = () => { } }) {
                     </div>
 
                     <div className="mb-3 row">
-                        <label htmlFor="staticEmail5" className="col-sm-2 col-form-label">Age</label>
+                        <label htmlFor="staticEmail5" className="col-sm-2 col-form-label">Image</label>
                         <div className="col-sm-10">
                             <input type="file" className="form-control-plaintext" id="staticEmail5" value={formFields.imagePath} placeholder="18" onChange={handelImageChange}></input>
                         </div>
@@ -246,8 +223,8 @@ export default function DetailForm({ data, setData = () => { } }) {
                         {formFieldsError.err ? <h5 className="text-danger">{formFieldsError.err}</h5> : null}
                     </div>
 
-                    <div className="mb-3 row" >
-                        <button className="btn btn-primary" onClick={handleSubmit}> Submit  </button>
+                    <div className="mb-3 row button" >
+                        <button className="btn btn-primary col-sm-4 btn-submit" onClick={handleSubmit}> Submit  </button>
                     </div>
                 </form>
             </div>

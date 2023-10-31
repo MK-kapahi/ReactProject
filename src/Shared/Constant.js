@@ -18,6 +18,7 @@ export const REGEX = {
   };
 
 
+export const IMAGEURL = "http://localhost:8000/user/image/";
 export const  URL = "http://localhost:8000/user/"  
 export const route =
 {

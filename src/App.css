@@ -32,7 +32,27 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
+}
+
+img {
+  width: 40px;
+  height: 40px;
+}
+
+td {
+  text-align: left;
+}
+
+.button
+{
+  display: grid !important;
+}
+
+.btn-submit
+{
+  justify-self: center;
 }
