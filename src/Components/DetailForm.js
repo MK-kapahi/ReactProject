@@ -1,8 +1,7 @@
 
 import React, { useState } from "react";
 import { ERROR_MESSAGES, REGEX, URL, route } from "../Shared/Constant";
-import axios from "axios";
-import '../App.css';
+// import '../App.css';
 
 
 const initialFormFields = {
@@ -31,7 +30,6 @@ export default function DetailForm({ data, setData = () => { } , postData }) {
     const [formFieldsError, setFormFieldsErrors] = useState(formErrorsInitialState)
 
     const validateInput = (field, value, maxLength, errMsg, formFieldsError, setErrorState) => {
-
         switch (field) {
             case "name":
                 if (value.length > maxLength) {
@@ -163,10 +161,7 @@ export default function DetailForm({ data, setData = () => { } , postData }) {
         formData.append('file', uploadpic)
         console.log(formData)
 
-        setData((prevData) => ([...prevData, formData]));
         postData(formData);
-        console.log(setData)
-
         resetForm();
     };
 
@@ -181,7 +176,7 @@ export default function DetailForm({ data, setData = () => { } , postData }) {
                         <div className="col-sm-10">
                             <input type="text" className="form-control-plaintext" id="staticEmail" value={formFields.name} placeholder="abc..." onChange={(e) => validateInput("name", e.target.value, 15, ERROR_MESSAGES, formFieldsError, setFormFieldsErrors)} />
                         </div>
-                        {formFieldsError.name ? <label className="text-danger">{formFieldsError.name}</label> : null}
+                        {formFieldsError.name ? <label name="text-danger">{formFieldsError.name}</label> : null}
                     </div>
                     <div className="mb-3 row">
                         <label htmlFor="staticEmail1" className="col-sm-2 col-form-label">Email</label>
@@ -194,7 +189,7 @@ export default function DetailForm({ data, setData = () => { } , postData }) {
                         <label htmlFor="inputPassword" className="col-sm-2 col-form-label">Password</label>
                         <div className="col-sm-10">
                             <input type="password" className="form-control" id="inputPassword" value={formFields.password} onChange={(e) => validateInput("password", e.target.value, 8, ERROR_MESSAGES, formFieldsError, setFormFieldsErrors)}></input>
-                            {formFieldsError.password ? <label className="text-danger">{formFieldsError.password}</label> : null}
+                            {formFieldsError.password ? <label Name="text-danger">{formFieldsError.password}</label> : null}
                         </div>
                     </div>
                     <div className="mb-3 row">

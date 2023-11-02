@@ -21,7 +21,7 @@ export default function () {
     }
 
     const get = () => {
-        axios.get(URL).then((res) => {
+        axios.get(URL+route.GET).then((res) => {
 
             //    console.log(URL+route.POST)
             console.log(res);

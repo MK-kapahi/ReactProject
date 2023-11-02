@@ -2,11 +2,17 @@ import axios from "axios";
 import React, { useState } from "react";
 import { IMAGEURL, URL, route } from "../Shared/Constant";
 import '../App.css';
+import UpdateUser from "./UpdateUser";
+import { useNavigate } from "react-router-dom";
 export default function ShowData({ data, setData = () => { }, deleteUser }) {
-
+    const navigate = useNavigate();
 
     const deleteSelectedUser = (id) => {
         deleteUser(id)
+    }
+
+    const updateUser = (id) => {
+     navigate(`/update/${id}`)
     }
 
     const HeadingArray = {
@@ -35,7 +41,7 @@ export default function ShowData({ data, setData = () => { }, deleteUser }) {
 
         ACTION:
         {
-            title : "Action"
+            title: "Action"
         }
     };
     return (
@@ -74,6 +80,9 @@ export default function ShowData({ data, setData = () => { }, deleteUser }) {
                                             <td> <div>
                                                 <button onClick={() => deleteSelectedUser(val._id)}>
                                                     Delete
+                                                </button>
+                                                <button onClick={() => updateUser(val._id)}>
+                                                    Update
                                                 </button>
                                             </div> </td>
                                         </tr>
