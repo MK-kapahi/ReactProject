@@ -28,5 +28,10 @@ export const route =
   UPLOADIMAGE: "upload",
   DELETE: "deleteUser",
   UPDATE: "updateUser",
-  FIND: "findUser/"
+  FIND: "findUser/",
+  LOGOUT : "logout",
+  DATA : "getData"
+
 }  
+
+

@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useState , useEffect } from "react";
 import './style.css'
 import { ERROR_MESSAGES, REGEX, URL, route } from "../../../Shared/Constant";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const initialFeilds = {
     email: "",
     password: "",
@@ -14,17 +17,36 @@ const errorInitialFeilds =
     error: ""
 }
 export default function Login() {
+
+    const token = localStorage.getItem("token")
+    useEffect(() => {
+
+        axios.get(URL+route.DATA).then((res)=>{
+            if(res.data.length == 0)
+            {
+                localStorage.setItem("token" , "sdsfdfdg");
+            }
+        })
+        if (token) {
+            navigate('/home')
+        }
+
+        else {
+            navigate('/login')
+        }
+    }, []);
+
+    const navigate = useNavigate();
     const invalidCharacterForEmail = "!#$%^&*()_-+=~`,<>/?;:'{}[]\\|\"\"";
     const arrOfInvalidChForEmail = invalidCharacterForEmail.split("");
 
-    const { fields, setFields } = useState(initialFeilds);
-    const { errorFields, setErrorFeilds } = useState(errorInitialFeilds);
+    const [fields, setFields] = useState(initialFeilds);
+    const [errorFields, setErrorFields] = useState(errorInitialFeilds);
 
     const handelInputChange = (field, value, MINLENGTH, errMsg, err, setErrorState) => {
-
         switch (field) {
             case 'email':
-                if (value.length < MINLENGTH) {
+                if (value.length > MINLENGTH) {
                     setErrorState((prevState) => ({ ...prevState, [field]: errMsg.ENTER_BELOW_LENGTH_LIMIT(MINLENGTH) }));
                 } else if (value.split("").some((val) => arrOfInvalidChForEmail.some((item) => item === val))) {
                     setErrorState({ [field]: ERROR_MESSAGES.CANT_ENTER_NUMBER });
@@ -35,7 +57,7 @@ export default function Login() {
                 break;
 
             case 'password':
-                if (value.length < MINLENGTH) {
+                if (value.length > MINLENGTH) {
                     setErrorState((prevState) => ({ ...prevState, [field]: errMsg.ENTER_BELOW_LENGTH_LIMIT(MINLENGTH) }));
                 }
                 else {
@@ -69,31 +91,40 @@ export default function Login() {
             password.trim() === "";
 
         if (isAllFieldsFilled) {
-            setErrorFeilds({ err: ERROR_MESSAGES.ENTER_ALL_FIELDS });
+            setErrorFields({ err: ERROR_MESSAGES.ENTER_ALL_FIELDS });
             return;
         }
 
 
         if (!isEmailValid) {
-            setErrorFeilds({ "email": ERROR_MESSAGES.ENTER_VALID_EMAIL });
+            setErrorFields({ "email": ERROR_MESSAGES.ENTER_VALID_EMAIL });
             return;
         }
 
         if (!isPasswordValid) {
-            setErrorFeilds({ "password": ERROR_MESSAGES.ENTER_VALID_PASSWORD })
+            setErrorFields({ "password": ERROR_MESSAGES.ENTER_VALID_PASSWORD })
             return;
         }
 
 
-        const data = [
-            {
-                email: email,
-                password: password
-            }]
+        const data =
+        {
+            email: email,
+            password: password
+        }
 
+        console.log(data)
 
-        axios.post(URL + route.LOGIN).then((res) => {
-            console.log(res);
+        axios.post(URL + route.LOGIN,data).then((res) => {
+            console.log(res.data);
+            toast.success('Login Sucessfull' , {
+                position: toast.POSITION.TOP_RIGHT ,
+                className: 'toast-message'
+            })
+            localStorage.setItem("token" , res.data.token)
+            navigate('/home')
+        }).catch((error)=>{
+            toast.error(error)
         })
 
 
@@ -104,13 +135,15 @@ export default function Login() {
 
                 <div className="form-outline mb-4 formInput">
                     <label className="form-label" htmlFor="form2Example1">Email address</label>
-                    <input type="email" id="form2Example1" className="form-control" onChange={(e) => handelInputChange("email", e.target.value, 10, ERROR_MESSAGES, errorFields, setErrorFeilds)} />
+                    <input type="email" id="form2Example1" className="form-control" onChange={(e) => handelInputChange("email", e.target.value, 40, ERROR_MESSAGES, errorFields, setErrorFields)} />
+                    {errorFields.email ? <label className="text-danger">{errorFields.email}</label> : null}
                 </div>
 
 
                 <div className="form-outline mb-4 formInput">
                     <label className="form-label" htmlFor="form2Example2"  >Password</label>
-                    <input type="password" id="form2Example2" className="form-control" onChange={(e) => handelInputChange("password", e.target.value, 8, ERROR_MESSAGES, errorFields, setErrorFeilds)} />
+                    <input type="password" id="form2Example2" className="form-control" onChange={(e) => handelInputChange("password", e.target.value, 8, ERROR_MESSAGES, errorFields, setErrorFields)} />
+                    {errorFields.password ? <label className="text-danger">{errorFields.password}</label> : null}
                 </div>
 
 

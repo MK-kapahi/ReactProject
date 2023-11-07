@@ -1,18 +1,21 @@
-import axios from "axios";
-import React, { useState } from "react";
-import { IMAGEURL, URL, route } from "../Shared/Constant";
-import '../App.css';
-import UpdateUser from "./UpdateUser";
+
+import React, { useContext } from "react";
+import { IMAGEURL, } from "../../Shared/Constant";
+import { dataContext } from "../../Shared/Context";
+import '../../App.css';
 import { useNavigate } from "react-router-dom";
-export default function ShowData({ data, setData = () => { }, deleteUser }) {
+export default function ShowData() {
     const navigate = useNavigate();
+
+    const [data, deleteUser] = useContext(dataContext)
+    console.log(data)
 
     const deleteSelectedUser = (id) => {
         deleteUser(id)
     }
 
     const updateUser = (id) => {
-     navigate(`/update/${id}`)
+        navigate(`/home/update/${id}`)
     }
 
     const HeadingArray = {
@@ -75,7 +78,7 @@ export default function ShowData({ data, setData = () => { }, deleteUser }) {
                                             <td>{val.contact}</td>
                                             <td>{val.age}</td>
                                             <td> <div>
-                                                <img src={IMAGEURL+val.imagePath} ></img>
+                                                <img src={IMAGEURL + val.imagePath} alt="img is loading"></img>
                                             </div></td>
                                             <td> <div>
                                                 <button onClick={() => deleteSelectedUser(val._id)}>
