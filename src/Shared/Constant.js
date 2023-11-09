@@ -1,3 +1,5 @@
+
+
 export const ERROR_MESSAGES = {
   ENTER_ALL_FIELDS: "All fields are mandatory",
   ENTER_VALID_LENGTH: "enter Name with atleast more than 2 character",
@@ -18,8 +20,8 @@ export const REGEX = {
 };
 
 
-export const IMAGEURL = "http://localhost:8000/v1/image/";
-export const URL = "http://localhost:8000/v1/"
+export const IMAGEURL = process.env.REACT_APP_API_IMAGE_PATH
+export const URL = process.env.REACT_APP_API_BASE_URL
 export const route =
 {
   LOGIN :"login",

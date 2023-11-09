@@ -1,10 +1,11 @@
-import React, { useState , useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import './style.css'
 import { ERROR_MESSAGES, REGEX, URL, route } from "../../../Shared/Constant";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Cookies from 'universal-cookie';
 const initialFeilds = {
     email: "",
     password: "",
@@ -18,15 +19,15 @@ const errorInitialFeilds =
 }
 export default function Login() {
 
-    const token = localStorage.getItem("token")
+    const cookies = new Cookies();
+    let token = cookies.get('token');
     useEffect(() => {
 
-        axios.get(URL+route.DATA).then((res)=>{
-            if(res.data.length == 0)
-            {
-                localStorage.setItem("token" , "sdsfdfdg");
-            }
-        })
+        // axios.get(URL + route.DATA).then((res) => {
+        //     if (res.data.length == 0) {
+        //         document.cookie = `token=hello;max-age=604800;domain=example.com`
+        //     }
+        // })
         if (token) {
             navigate('/home')
         }
@@ -113,17 +114,16 @@ export default function Login() {
             password: password
         }
 
-        console.log(data)
 
-        axios.post(URL + route.LOGIN,data).then((res) => {
+        axios.post(URL + route.LOGIN, data, { withCredentials: true }).then((res) => {
+
             console.log(res.data);
-            toast.success('Login Sucessfull' , {
-                position: toast.POSITION.TOP_RIGHT ,
+            toast.success('Login Sucessfull', {
+                position: toast.POSITION.TOP_RIGHT,
                 className: 'toast-message'
             })
-            localStorage.setItem("token" , res.data.token)
             navigate('/home')
-        }).catch((error)=>{
+        }).catch((error) => {
             toast.error(error)
         })
 

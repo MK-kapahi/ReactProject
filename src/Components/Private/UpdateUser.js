@@ -40,9 +40,7 @@ export default function UpdateUser() {
     const tokenStored = localStorage.getItem("token")
     useEffect(() => {
         axios.get(URL + route.FIND + id, {
-            headers: {
-                authorization: tokenStored
-            }
+            withCredentials : 'include',
         }).then((res) => {
             console.log(res.data)
             setFormFields({

@@ -9,20 +9,22 @@ import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { dataContext } from "../../Shared/Context";
+import Cookies from 'universal-cookie';
+
 
 
 export default function () {
+    const cookies = new Cookies();
 
     const navigate = useNavigate();
 
     const [dataList, setDataList] = useState([]);
-    const token = localStorage.getItem('token')
+    let token = cookies.get('token');
+    // const token = localStorage.getItem('token')
 
     function post(data) {
         axios.post(URL + route.POST, data, {
-            headers: {
-                authorization: token
-            }
+            withCredentials : 'include',
         }).then((res) => {
             console.log(res);
 
@@ -40,9 +42,8 @@ export default function () {
 
     const get = () => {
         axios.get(URL + route.GET, {
-            headers: {
-                authorization: token
-            }
+
+            withCredentials : 'include',
         }).then((res) => {
             console.log(res);
             if (res.data.message === 'jwt expired') {
@@ -65,9 +66,7 @@ export default function () {
     const deleteUser = (id) => {
         axios.delete(URL + route.DELETE + "/" + id, {
 
-            headers: {
-                authorization: token
-            }
+            withCredentials : 'include',
         }).then((res) => {
             console.log(res);
             toast.success("User Deleted Sucessfully ", {
@@ -82,9 +81,7 @@ export default function () {
 
     const logoutUser = () => {
         axios.delete(URL + route.LOGOUT, {
-            headers: {
-                authorization: token
-            }
+            withCredentials : 'include',
         }).then((res) => {
             console.log(res)
             toast.success("Logout Sucessfull", {
@@ -99,6 +96,9 @@ export default function () {
     }
 
     useEffect(() => {
+
+
+
         if (token) {
             navigate('/home')
         }
@@ -107,7 +107,7 @@ export default function () {
             navigate('/login')
         }
 
-        // get();
+        get();
     }, []);
     return (
         <>
@@ -145,7 +145,7 @@ export default function () {
                 <DetailForm data={dataList} setData={setDataList} postData={post} />
 
 
-                <dataContext.Provider value={[ dataList, deleteUser ]}>
+                <dataContext.Provider value={[dataList, deleteUser]}>
                     < ShowData />
                 </dataContext.Provider>
             </section>
