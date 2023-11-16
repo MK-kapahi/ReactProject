@@ -32,8 +32,8 @@ export const route =
   UPDATE: "updateUser",
   FIND: "findUser/",
   LOGOUT : "logout",
-  DATA : "getData"
-
+  DATA : "getData",
+  FILTER : "filter"
 }  
 
 

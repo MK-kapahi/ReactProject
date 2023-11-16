@@ -9,7 +9,6 @@ import 'react-toastify/dist/ReactToastify.css';
 const initialFormFields = {
     name: '',
     email: '',
-    password: '',
     contact: '',
     age: '',
     imagePath: '',
@@ -19,7 +18,6 @@ const initialFormFields = {
 const formErrorsInitialState = {
     name: "",
     email: "",
-    password: "",
     contact: "",
     age: "",
     err: "",
@@ -46,7 +44,6 @@ export default function UpdateUser() {
             setFormFields({
                 name: res.data.name,
                 email: res.data.email,
-                password: res.data.password,
                 contact: res.data.contact,
                 age: res.data.age,
                 imagePath: res.data.imagePath
@@ -73,15 +70,11 @@ export default function UpdateUser() {
         //Validation checks
         const isNameValid = name.trim().length >= 3;
         const isEmailValid = REGEX.EMAIL.test(email);
-        const isPasswordValid = REGEX.PASSWORD.test(password);
         const isAllFieldsFilled =
             name.trim() === "" &&
             email.trim() === "" &&
-            password.trim() === "" &&
             age.trim() === "" &&
             contact.trim() === ""
-
-        console.log(isPasswordValid, password, "isjdgfd")
 
         if (isAllFieldsFilled) {
             setFormFieldsErrors({ err: ERROR_MESSAGES.ENTER_ALL_FIELDS });
@@ -100,10 +93,6 @@ export default function UpdateUser() {
             return;
         }
 
-        if (!isPasswordValid) {
-            setFormFieldsErrors({ "password": ERROR_MESSAGES.ENTER_VALID_PASSWORD })
-            return;
-        }
         // All validations passed, proceed with saving data
 
         console.log(name)
@@ -129,10 +118,7 @@ export default function UpdateUser() {
         console.log(data)
 
         axios.put(URL + route.UPDATE + "/" + id, formData, {
-            headers:
-            {
-                authorization: tokenStored
-            }
+            withCredentials : 'include',   
         }).then((res) => {
             console.log(res)
 
@@ -250,8 +236,8 @@ export default function UpdateUser() {
                     <div className="mb-3 row">
                         <label htmlFor="staticEmail3" className="col-sm-2 col-form-label">Age</label>
                         <div className="col-sm-10">
-                            <input type="number" className="form-control-plaintext" id="staticEmail3" placeholder="18" value={formFields.age} onChange={(e) => handelInput("password", e.target.value, 8, ERROR_MESSAGES, formFieldsError, setFormFieldsErrors)} ></input>
-                            {formFieldsError.name ? <label className="text-danger">{formFieldsError.name}</label> : null}
+                            <input type="number" className="form-control-plaintext" id="staticEmail3" placeholder="18" value={formFields.age} onChange={(e) => handelInput("age", e.target.value, 8, ERROR_MESSAGES, formFieldsError, setFormFieldsErrors)} ></input>
+                            {formFieldsError.age ? <label className="text-danger">{formFieldsError.age}</label> : null}
                         </div>
                     </div>
                     <div className="mb-3 row">

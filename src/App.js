@@ -6,6 +6,7 @@ import UpdateUser from './Components/Private/UpdateUser';
 import Login from './Components/Public/Login';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import FilterPage from './Components/Private/FilterPage';
 
 function App() {
 
@@ -36,6 +37,7 @@ function App() {
           />
           <Route exact path='/login' element={<Login />}></Route>
           <Route exact path='/home' element={<Home />}></Route>
+          <Route exact path='/home/applyFilter' element={<FilterPage />} > </Route>
           <Route exact path='/home/update/:id' element={<UpdateUser />}></Route>
         </Routes>
       </BrowserRouter>

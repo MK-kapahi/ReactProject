@@ -10,11 +10,14 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { dataContext } from "../../Shared/Context";
 import Cookies from 'universal-cookie';
+import { useDispatch } from "react-redux";
+import { getUsers } from "../../Redux/Actions";
 
 
 
 export default function () {
     const cookies = new Cookies();
+    const dispatch = useDispatch();
 
     const navigate = useNavigate();
 
@@ -24,9 +27,11 @@ export default function () {
 
     function post(data) {
         axios.post(URL + route.POST, data, {
-            withCredentials : 'include',
+            withCredentials: 'include',
         }).then((res) => {
-            console.log(res);
+            toast.success("User Added Sucessfully", {
+                position: toast.POSITION.TOP_RIGHT,
+            })
 
             if (res.data.role == 1) {
                 localStorage.clear()
@@ -41,9 +46,11 @@ export default function () {
     }
 
     const get = () => {
+
+        // dispatch(getUsers({}))
         axios.get(URL + route.GET, {
 
-            withCredentials : 'include',
+            withCredentials: 'include',
         }).then((res) => {
             console.log(res);
             if (res.data.message === 'jwt expired') {
@@ -66,7 +73,7 @@ export default function () {
     const deleteUser = (id) => {
         axios.delete(URL + route.DELETE + "/" + id, {
 
-            withCredentials : 'include',
+            withCredentials: 'include',
         }).then((res) => {
             console.log(res);
             toast.success("User Deleted Sucessfully ", {
@@ -81,7 +88,7 @@ export default function () {
 
     const logoutUser = () => {
         axios.delete(URL + route.LOGOUT, {
-            withCredentials : 'include',
+            withCredentials: 'include',
         }).then((res) => {
             console.log(res)
             toast.success("Logout Sucessfull", {
@@ -93,6 +100,10 @@ export default function () {
             console.log(err)
         })
 
+    }
+
+    const showUser = () => {
+        navigate('/home/applyFilter')
     }
 
     useEffect(() => {
@@ -135,6 +146,9 @@ export default function () {
                             </ul>
 
                             <div className="d-flex align-items-center">
+                                <button type="button" className="btn btn-primary me-3" onClick={showUser}>
+                                    Apply Filter
+                                </button>
                                 <button type="button" className="btn btn-primary me-3" onClick={logoutUser}>
                                     logout
                                 </button>
