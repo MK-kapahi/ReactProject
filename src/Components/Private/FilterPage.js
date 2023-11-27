@@ -4,33 +4,47 @@ import axios from "axios";
 import './style.css'
 import ReactPaginate from "react-paginate";
 import { useNavigate } from "react-router-dom";
+import Pagination from "./Pagination";
+import { debounce } from 'lodash';
 export default function FilterPage() {
 
     const [data, setData] = useState([])
     const [maxAge, setMaxAge] = useState(150)
     const [minAge, setMinAge] = useState(0)
     const [searchString, setSearchString] = useState('')
-    const [itemPerPage, setItemPerPage] = useState(4)
+    const [itemPerPage, setItemPerPage] = useState(2)
     const [skip, setSkip] = useState(0)
     const [limit, setLimit] = useState(itemPerPage)
-    const [currentPage, setCurrentPage] = useState(0)
+    const [currentPage, setCurrentPage] = useState(1)
 
     const navigate = useNavigate();
 
+    const fetchData = () => {
+        axios.get(URL + route.FILTER + "?limit=" + limit + "&skip=" + skip + '&char=' + `${searchString || ""}` + '&minAge=' + minAge + '&maxAge=' + maxAge)
+            .then((res) => {
+                console.log(res.data);
+                setData(res.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
     useEffect(() => {
 
+        let timeoutId;
 
-        axios.get(URL + route.FILTER + "?limit=" + limit + "&skip=" + skip + '&char=' + `${searchString || ""}` + '&minAge=' + minAge + '&maxAge=' + maxAge).then((res) => {
-            console.log(res.data)
-            setData(res.data)
+        timeoutId = setTimeout(() => {
+            fetchData();
+        }, 1000);
+        return () => {
+            clearTimeout(timeoutId);
+        };
 
-        }).catch((err) => {
-            console.log(err)
-        })
-
-        console.log("heyyyyyyyyyyyyyyy", searchString)
 
     }, [limit, skip, minAge, maxAge, searchString])
+
+
 
     const selectedValue = (e) => {
         console.log(e.target.value);
@@ -52,12 +66,15 @@ export default function FilterPage() {
         setSearchString(e.target.value)
     }
 
-    const handlePageClick = (event) => {
-        setCurrentPage(event.selected)
+    // const handlePageClick = (event) => {
+    //     setCurrentPage(event.selected)
 
-        setSkip(itemPerPage * event.selected)
-    }
+    //     setSkip(itemPerPage * event.selected)
+    // }
 
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
     const goToHome = () => {
         navigate('/home')
     }
@@ -110,8 +127,10 @@ export default function FilterPage() {
 
                     }
                 </div>
-                <div className="Pagination" id="container">
-                    <ReactPaginate
+
+                < Pagination currentPage={currentPage} itemsPerPage={itemPerPage} pageCount={data?.count / itemPerPage} setSkip={setSkip} setCurrentPage={setCurrentPage} />
+                {/* <div className="Pagination" id="container"> */}
+                {/* <ReactPaginate
                         breakLabel="..."
                         nextLabel="next >"
                         onPageChange={handlePageClick}
@@ -129,9 +148,16 @@ export default function FilterPage() {
                         pageCount={data?.count / itemPerPage}
                         previousLabel="< previous"
                         renderOnZeroPageCount={null}
-                    />
+                    /> */}
 
-                </div>
+                {/* <Pagination
+                        currentPage={currentPage}
+                        totalPages={5}
+                        onPageChange={handlePageChange}
+                    /> */}
+
+
+                {/* </div> */}
             </section>
         </>)
 }

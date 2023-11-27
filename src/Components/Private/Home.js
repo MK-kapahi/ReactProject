@@ -10,65 +10,52 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { dataContext } from "../../Shared/Context";
 import Cookies from 'universal-cookie';
-import { useDispatch } from "react-redux";
-import { getUsers } from "../../Redux/Actions";
+import { useDispatch, useSelector } from "react-redux";
+import { addnewUser, getUsersData } from "../../Redux/Actions";
 
 
 
 export default function () {
     const cookies = new Cookies();
     const dispatch = useDispatch();
+    const [dataList, setDataList] = useState([]);
+
+    const data = useSelector(state => state.reducer.payload )
+   const userData = data || [ ]
 
     const navigate = useNavigate();
 
-    const [dataList, setDataList] = useState([]);
     let token = cookies.get('token');
     // const token = localStorage.getItem('token')
 
     function post(data) {
-        axios.post(URL + route.POST, data, {
-            withCredentials: 'include',
-        }).then((res) => {
-            toast.success("User Added Sucessfully", {
-                position: toast.POSITION.TOP_RIGHT,
-            })
 
-            if (res.data.role == 1) {
-                localStorage.clear()
-                navigate('/login');
-            }
-            get();
+        
+        dispatch(addnewUser({data}))
+        // axios.post(URL + route.POST, data, {
+        //     withCredentials: 'include',
+        // }).then((res) => {
+        //     toast.success("User Added Sucessfully", {
+        //         position: toast.POSITION.TOP_RIGHT,
+        //     })
 
-        }).catch((err) => {
-            console.log(err);
-            toast.warning(err.response.data)
-        })
+        //     if (res.data.role == 1) {
+        //         localStorage.clear()
+        //         navigate('/login');
+        //     }
+        //     get();
+
+        // }).catch((err) => {
+        //     console.log(err);
+        //     toast.warning(err.response.data)
+        // })
     }
 
     const get = () => {
 
-        // dispatch(getUsers({}))
-        axios.get(URL + route.GET, {
-
-            withCredentials: 'include',
-        }).then((res) => {
-            console.log(res);
-            if (res.data.message === 'jwt expired') {
-                localStorage.clear()
-                navigate('/login');
-                toast.warning("Session Expired Please login", {
-                    position: toast.POSITION.TOP_RIGHT,
-                })
-            }
-
-            else {
-                setDataList([...res.data])
-
-            }
-        }).catch((error) => {
-            console.log(error);
-        })
+        dispatch(getUsersData({}))
     }
+   
 
     const deleteUser = (id) => {
         axios.delete(URL + route.DELETE + "/" + id, {
@@ -147,7 +134,7 @@ export default function () {
 
                             <div className="d-flex align-items-center">
                                 <button type="button" className="btn btn-primary me-3" onClick={showUser}>
-                                    Apply Filter
+                                    View Users
                                 </button>
                                 <button type="button" className="btn btn-primary me-3" onClick={logoutUser}>
                                     logout
@@ -159,9 +146,8 @@ export default function () {
                 <DetailForm data={dataList} setData={setDataList} postData={post} />
 
 
-                <dataContext.Provider value={[dataList, deleteUser]}>
-                    < ShowData />
-                </dataContext.Provider>
+                < ShowData dataList={userData } deleteUser={deleteUser} />
+
             </section>
         </>
     )

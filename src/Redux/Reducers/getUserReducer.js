@@ -7,7 +7,7 @@ const initialStateForRegister = {
 }
 export const GET_USER_REDUCER = (state = initialStateForRegister, action) => {
     switch (action?.type) {
-        case ActionStates.GET_ALL_USERS_DATA:
+        case ActionStates.SET_USER_DATA:
             return {
                 ...state, ...action?.payload
             }

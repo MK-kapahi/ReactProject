@@ -1,11 +1,39 @@
 import axios from "axios";
 import { takeLatest, put, all } from "redux-saga/effects";
 import { ActionStates } from "../Actions/ActionState";
-import { getUsers } from "../Actions";
+import { setUserData } from "../Actions";
 import { URL, route } from "../../Shared/Constant";
+// import { act } from "react-dom/test-utils";
+// import { GET_USER_REDUCER } from "../Reducers";
 
 
-function* getUser  (payload) {
+
+function* addUser(payload) {
+    console.log(payload?.payload)
+
+    try {
+
+        const option = {
+            withCredentials: 'include',
+        }
+        const res = yield axios.post(
+            URL + route.POST, payload?.payload ,option
+        );
+
+        // const action = {
+        //     type: ActionStates.SET_USER_DATA,
+        //     payload: res?.data
+        // }
+        console.log(res, "user data")
+        // yield put(setUserData(action));
+    } catch (error) {
+        console.log(error, "error in adding user")
+    }
+}
+function* getUser(payload) {
+
+    console.log(payload)
+
     try {
 
         const option = {
@@ -14,8 +42,13 @@ function* getUser  (payload) {
         const res = yield axios.get(
             URL + route.GET, option
         );
+
+        const action = {
+            type: ActionStates.SET_USER_DATA,
+            payload: res?.data
+        }
         console.log(res?.data, "user data")
-        yield put(getUsers(res.data))
+        yield put(setUserData(action));
     } catch (error) {
         console.log(error, "error in adding vehicle")
     }
@@ -23,7 +56,8 @@ function* getUser  (payload) {
 
 function* Saga() {
     yield all([
-        takeLatest(ActionStates.GET_ALL_USERS_DATA, getUser)
+        takeLatest(ActionStates.GET_ALL_USERS_DATA, getUser),
+        takeLatest(ActionStates.ADD_NEW_USER , addUser)
     ])
 }
 

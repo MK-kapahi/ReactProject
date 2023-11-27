@@ -4,12 +4,10 @@ import { IMAGEURL, } from "../../Shared/Constant";
 import { dataContext } from "../../Shared/Context";
 import '../../App.css';
 import { useNavigate } from "react-router-dom";
-export default function ShowData() {
+import { useState } from "react";
+export default function ShowData( {dataList , deleteUser}) {
     const navigate = useNavigate();
-
-    const [data, deleteUser] = useContext(dataContext)
-    console.log(data)
-
+    const data = [...dataList]
     const deleteSelectedUser = (id) => {
         deleteUser(id)
     }
