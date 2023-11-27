@@ -1,23 +1,23 @@
-import { ActionStates } from "./ActionState"
+import { ActionStates } from "./ActionState";
 
 export const getUsersData = (payload) => {
   return {
     type: ActionStates.GET_ALL_USERS_DATA,
-    payload
-  }
-}
+    payload,
+  };
+};
 
 export const setUserData = (payload) => {
   return {
     type: ActionStates.SET_USER_DATA,
-    payload
-  }
-}
+    payload,
+  };
+};
 
-export const addnewUser = (payload) =>{
-  console.log("dtgdjnbvjhgugj",payload)
+export const addnewUser = (payload) => {
+  console.log("dtgdjnbvjhgugj", payload);
   return {
-    type: ActionStates.ADD_NEW_USER ,
-    payload
-  }
-}
+    type: ActionStates.ADD_NEW_USER,
+    payload,
+  };
+};
