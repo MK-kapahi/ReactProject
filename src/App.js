@@ -1,8 +1,13 @@
 
+// libs
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ToastContainer } from 'react-toastify';
+
+// styles
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
+
+// components
 import UpdateUser from "./View/Private/editUser";
 import FilterPage from "./View/Private/filterPage";
 import Home from "./View/Private/home";

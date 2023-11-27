@@ -1,8 +1,11 @@
+// libs
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
+// consts
 import {
     ERROR_MESSAGES,
     IMAGEURL,
@@ -10,6 +13,8 @@ import {
     URL,
     route,
 } from "../../../Shared/Constant";
+
+
 const initialFormFields = {
   name: "",
   email: "",
@@ -37,7 +42,7 @@ export default function UpdateUser() {
   const arrOfInvalidChForEmail = invalidCharacterForEmail.split("");
 
   const { id } = useParams();
-  const tokenStored = localStorage.getItem("token");
+  // const tokenStored = localStorage.getItem("token");
   useEffect(() => {
     axios
       .get(URL + route.FIND + id, {

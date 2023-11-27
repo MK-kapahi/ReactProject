@@ -12,6 +12,9 @@ import "./style.css";
 // consts
 import { ERROR_MESSAGES, REGEX, URL, route } from "../../../Shared/Constant";
 
+// components
+import CustomButton from "../../../Components/atom/CustomButton";
+
 const initialFields = {
   email: "",
   password: "",
@@ -184,13 +187,13 @@ export default function Login() {
           ) : null}
         </div>
 
-        <button
+        <CustomButton
           type="button"
           className="btn btn-primary btn-block mb-4"
           onClick={handelSubmit}
         >
           Sign in
-        </button>
+        </CustomButton>
       </form>
     </section>
   );

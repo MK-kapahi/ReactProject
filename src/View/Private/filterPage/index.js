@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { IMAGEURL, URL, route } from "../../../Shared/Constant";
 
 // components
-import Pagination from "./Pagination";
+import Pagination from "../../../Components/cells/CustomPagination";
 
 // styles
 import "./../style.css";

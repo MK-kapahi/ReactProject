@@ -1,3 +1,5 @@
+import CustomButton from "../atom/CustomButton";
+
 export default function Pagination({
   currentPage,
   itemsPerPage,
@@ -34,13 +36,13 @@ export default function Pagination({
       <nav aria-label="...">
         <ul className="pagination">
           <li className="page-item">
-            <button
+            <CustomButton
               type="button"
               className="page-link"
               onClick={handlePreviousClick}
             >
               Previous
-            </button>
+            </CustomButton>
           </li>
           {pageDisplay
             .slice(
@@ -66,13 +68,13 @@ export default function Pagination({
               );
             })}
           <li className="page-item">
-            <button
+            <CustomButton
               type="button"
               className="page-link"
               onClick={handleNextClick}
             >
               Next
-            </button>
+            </CustomButton>
           </li>
         </ul>
       </nav>
