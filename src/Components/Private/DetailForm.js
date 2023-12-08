@@ -149,7 +149,6 @@ export default function DetailForm({ data, setData = () => { } , postData }) {
             return;
         }
         // All validations passed, proceed with saving data
-        console.log("Data", data)
 
         const formData = new FormData();
         formData.append("name", name)
@@ -158,8 +157,6 @@ export default function DetailForm({ data, setData = () => { } , postData }) {
         formData.append("contact", contact)
         formData.append("age", age)
         formData.append('file', uploadpic)
-        console.log(formData)
-
         postData(formData);
         resetForm();
     };

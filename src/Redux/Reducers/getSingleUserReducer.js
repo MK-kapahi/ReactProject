@@ -2,11 +2,11 @@ import { ActionStates } from "../Actions/ActionState"
 
 
 
-const initialStateForRegister = {
-}
-export const GET_USER_REDUCER = (state = initialStateForRegister, action) => {
+const initialStateForUserRegister = {};
+
+export const GET_SINGLE_USER_REDUCER = (state = initialStateForUserRegister, action) => {
     switch (action?.type) {
-        case ActionStates.SET_USER_DATA:
+        case ActionStates.SET_USER:
             return {
                 ...state, ...action
             }
@@ -15,5 +15,5 @@ export const GET_USER_REDUCER = (state = initialStateForRegister, action) => {
             return state
     }
 
-
+         
 }

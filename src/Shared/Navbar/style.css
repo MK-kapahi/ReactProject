@@ -1,0 +1,6 @@
+.active{
+    /* Your active link styles */
+    font-weight: bold;
+    color: red;
+    background-color: aquamarine;
+  }

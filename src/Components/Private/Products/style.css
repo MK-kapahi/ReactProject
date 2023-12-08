@@ -1,0 +1,26 @@
+.productCard
+{
+    width: 30%;
+}
+
+.productImage
+{
+    width: 100%;
+}
+
+.img
+{
+    width: 100%;
+    height: 150px;
+}
+
+.input-text
+{
+    width: 70%;
+}
+
+.buy_button
+{
+    width: 50%;
+
+}

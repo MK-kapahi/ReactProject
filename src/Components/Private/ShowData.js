@@ -13,7 +13,7 @@ export default function ShowData( {dataList , deleteUser}) {
     }
 
     const updateUser = (id) => {
-        navigate(`/home/update/${id}`)
+        navigate(`/update/${id}`)
     }
 
     const HeadingArray = {

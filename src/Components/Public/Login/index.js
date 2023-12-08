@@ -5,7 +5,9 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Cookies from 'universal-cookie';
+import { useDispatch } from "react-redux";
+import { LoginUser } from "../../../Redux/Actions";
+import { success } from "../../../Shared/Context";
 const initialFeilds = {
     email: "",
     password: "",
@@ -18,26 +20,17 @@ const errorInitialFeilds =
     error: ""
 }
 export default function Login() {
-
-    const cookies = new Cookies();
-    let token = cookies.get('token');
     useEffect(() => {
 
-        // axios.get(URL + route.DATA).then((res) => {
-        //     if (res.data.length == 0) {
-        //         document.cookie = `token=hello;max-age=604800;domain=example.com`
-        //     }
-        // })
-        if (token) {
-            navigate('/home')
-        }
-
-        else {
-            navigate('/login')
-        }
+        axios.get(URL + route.DATA).then((res) => {
+            if (res.data.length == 0) {
+                document.cookie = `token=hello;max-age=604800;domain=example.com`
+            }
+        })
     }, []);
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const invalidCharacterForEmail = "!#$%^&*()_-+=~`,<>/?;:'{}[]\\|\"\"";
     const arrOfInvalidChForEmail = invalidCharacterForEmail.split("");
 
@@ -114,21 +107,15 @@ export default function Login() {
             password: password
         }
 
-
-        axios.post(URL + route.LOGIN, data, { withCredentials: true }).then((res) => {
-
-            console.log(res.data);
-            toast.success('Login Sucessfull', {
-                position: toast.POSITION.TOP_RIGHT,
-                className: 'toast-message'
-            })
-            navigate('/home')
-        }).catch((error) => {
-            toast.error(error)
-        })
-
-
+        dispatch(LoginUser({ data , successfullLogin }))
     }
+
+    const successfullLogin = (msg) =>{
+        navigate('/home')
+
+        success(msg)
+        
+        }
     return (
         <section className="container">
             <form className="form">

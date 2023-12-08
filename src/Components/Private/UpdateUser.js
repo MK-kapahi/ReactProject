@@ -6,6 +6,9 @@ import { useParams } from "react-router-dom";
 import { ERROR_MESSAGES, URL, route, REGEX, IMAGEURL } from "../../Shared/Constant";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useDispatch ,useSelector } from "react-redux";
+import { getUser, updateUser } from "../../Redux/Actions";
+import { success , errorFunction } from "../../Shared/Context";
 const initialFormFields = {
     name: '',
     email: '',
@@ -25,7 +28,7 @@ const formErrorsInitialState = {
 
 export default function UpdateUser() {
 
-
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const [formFields, setFormFields] = useState(initialFormFields)
     const [uploadpic, setUploadpic] = useState(null)
@@ -35,26 +38,20 @@ export default function UpdateUser() {
 
 
     const { id } = useParams()
+
+    const data = useSelector(state => state?.singleUserReducer?.payload)
+
     const tokenStored = localStorage.getItem("token")
     useEffect(() => {
-        axios.get(URL + route.FIND + id, {
-            withCredentials : 'include',
-        }).then((res) => {
-            console.log(res.data)
+
+        dispatch(getUser({id}))
             setFormFields({
-                name: res.data.name,
-                email: res.data.email,
-                contact: res.data.contact,
-                age: res.data.age,
-                imagePath: res.data.imagePath
+                name: data?.name,
+                email: data?.email,
+                contact: data?.contact,
+                age: data?.age,
+                imagePath: data?.imagePath
             })
-
-        }).catch((err) => {
-            console.log(err)
-            toast.warning(err.response.statusText)
-            navigate('/home')
-
-        })
     }, []);
 
     const handleSubmit = (e) => {
@@ -102,34 +99,18 @@ export default function UpdateUser() {
         formData.append("email", email)
         formData.append("contact", contact)
         formData.append("age", age)
-        console.log(uploadpic)
         if (uploadpic) {
             console.log("if the pic is uploaded")
             formData.append('file', uploadpic)
         }
-        const data = {
-            name: name,
-            email: email,
-            password: password,
-            contact: contact,
-            age: age,
-            imagePath: formData
-        }
-        console.log(data)
 
-        axios.put(URL + route.UPDATE + "/" + id, formData, {
-            withCredentials : 'include',   
-        }).then((res) => {
-            console.log(res)
 
-            toast.success("User Updated Sucessfully", {
-                position: toast.POSITION.TOP_RIGHT,
-            })
-            navigate('/home')
+        dispatch(updateUser({id ,formData , successfullLogin , errorFunction}))
+    }
+    const successfullLogin = (msg) =>{
+        navigate('/home')
 
-        }).catch((err) => {
-            console.log(err)
-        })
+        success(msg)
     }
 
     const handelImageChange = (e) => {

@@ -33,7 +33,8 @@ export const route =
   FIND: "findUser/",
   LOGOUT : "logout",
   DATA : "getData",
-  FILTER : "filter"
+  FILTER : "filter",
+  SEARCH :"searchUser"
 }  
 
 

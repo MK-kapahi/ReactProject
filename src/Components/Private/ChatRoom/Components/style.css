@@ -1,0 +1,42 @@
+.pb-3
+{
+    color: black;
+}
+
+.sendButton
+{
+   
+    background-color: white;
+    border: 1px solid #ced4da;
+    border-left: none;
+    border-radius: 0.25rem;
+}
+
+.input-message
+{
+    border-right: none;
+}
+.chatdiv
+{
+    width: 100%;
+}
+
+.receiverDiv
+{
+ 
+   
+   float: left;
+   width: 54%;
+   align-items: flex-end;
+}
+
+.senderDiv
+{
+   width: 54%;
+   float: right;
+   align-items: flex-end;
+}
+/* .chatdisplay
+{
+    width: 100%;
+} */
